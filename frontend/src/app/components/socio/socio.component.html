@@ -1,0 +1,68 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Socios</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="numeroDocumento">N° Documento</label>
+      <input id="numeroDocumento" type="text" [(ngModel)]="socioActual.numeroDocumento" name="numeroDocumento" required>
+      <small class="ayuda">DNI del socio (8 dígitos)</small>
+    </div>
+    <div class="campo">
+      <label for="nombres">Nombres</label>
+      <input id="nombres" type="text" [(ngModel)]="socioActual.nombres" name="nombres" required>
+      <small class="ayuda">Nombre completo del socio</small>
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono</label>
+      <input id="telefono" type="text" [(ngModel)]="socioActual.telefono" name="telefono">
+      <small class="ayuda">Número de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="socioActual.email" name="email">
+      <small class="ayuda">Correo de contacto</small>
+    </div>
+    <div class="campo">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" type="text" [(ngModel)]="socioActual.direccion" name="direccion">
+      <small class="ayuda">Dirección del socio</small>
+    </div>
+    <div class="campo">
+      <label for="fechaInscripcion">Fecha de inscripción</label>
+      <input id="fechaInscripcion" type="date" [(ngModel)]="socioActual.fechaInscripcion" name="fechaInscripcion">
+      <small class="ayuda">Cuándo se inscribió como socio</small>
+    </div>
+    <div class="campo campo-check">
+      <label><input type="checkbox" [(ngModel)]="socioActual.estado" name="estado"> Socio activo</label>
+      <small class="ayuda">Desmarca si ya no puede hacer préstamos</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>N° Documento</th><th>Nombres</th><th>Teléfono</th><th>Email</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of socios">
+        <td>{{ item.numeroDocumento }}</td><td>{{ item.nombres }}</td><td>{{ item.telefono }}</td><td>{{ item.email }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,50 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Autores por Libro</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="libro">Libro</label>
+      <select id="libro" [(ngModel)]="libroAutorActual.libro.id" name="libro">
+        <option [value]="0" disabled>Selecciona libro</option>
+        <option *ngFor="let opt of libros" [value]="opt.id">{{ opt.titulo }}</option>
+      </select>
+      <small class="ayuda">A qué libro se le asigna el autor</small>
+    </div>
+    <div class="campo">
+      <label for="autor">Autor</label>
+      <select id="autor" [(ngModel)]="libroAutorActual.autor.id" name="autor">
+        <option [value]="0" disabled>Selecciona autor</option>
+        <option *ngFor="let opt of autores" [value]="opt.id">{{ opt.nombres }} {{ opt.apellidos }}</option>
+      </select>
+      <small class="ayuda">Autor a vincular con el libro</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>ID</th><th>Libro (ID)</th><th>Autor (ID)</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of libroAutors">
+        <td>{{ item.id }}</td><td>{{ item.libro?.id }}</td><td>{{ item.autor?.id }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

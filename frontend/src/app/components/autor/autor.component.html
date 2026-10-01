@@ -1,0 +1,49 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Autores</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="nombres">Nombres</label>
+      <input id="nombres" type="text" [(ngModel)]="autorActual.nombres" name="nombres" required>
+      <small class="ayuda">Nombres del autor</small>
+    </div>
+    <div class="campo">
+      <label for="apellidos">Apellidos</label>
+      <input id="apellidos" type="text" [(ngModel)]="autorActual.apellidos" name="apellidos" required>
+      <small class="ayuda">Apellidos del autor</small>
+    </div>
+    <div class="campo">
+      <label for="nacionalidad">Nacionalidad</label>
+      <input id="nacionalidad" type="text" [(ngModel)]="autorActual.nacionalidad" name="nacionalidad">
+      <small class="ayuda">Ej. Peruana, Argentina</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Nombres</th><th>Apellidos</th><th>Nacionalidad</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of autors">
+        <td>{{ item.nombres }}</td><td>{{ item.apellidos }}</td><td>{{ item.nacionalidad }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

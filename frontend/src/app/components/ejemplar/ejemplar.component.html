@@ -1,0 +1,57 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Ejemplares</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="codigoBarra">Código de barra</label>
+      <input id="codigoBarra" type="text" [(ngModel)]="ejemplarActual.codigoBarra" name="codigoBarra" required>
+      <small class="ayuda">Código único de esta copia física del libro</small>
+    </div>
+    <div class="campo">
+      <label for="ubicacion">Ubicación</label>
+      <input id="ubicacion" type="text" [(ngModel)]="ejemplarActual.ubicacion" name="ubicacion">
+      <small class="ayuda">Ej. Estante A3, Sala 2</small>
+    </div>
+    <div class="campo">
+      <label for="estado">Estado</label>
+      <input id="estado" type="text" [(ngModel)]="ejemplarActual.estado" name="estado">
+      <small class="ayuda">Ej. DISPONIBLE, PRESTADO, DAÑADO</small>
+    </div>
+    <div class="campo">
+      <label for="libro">Libro</label>
+      <select id="libro" [(ngModel)]="ejemplarActual.libro.id" name="libro">
+        <option [value]="0" disabled>Selecciona libro</option>
+        <option *ngFor="let opt of libros" [value]="opt.id">{{ opt.titulo }}</option>
+      </select>
+      <small class="ayuda">De qué libro es esta copia física</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Código de barra</th><th>Ubicación</th><th>Estado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ejemplars">
+        <td>{{ item.codigoBarra }}</td><td>{{ item.ubicacion }}</td><td>{{ item.estado }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

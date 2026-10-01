@@ -1,0 +1,49 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Editoriales</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" [(ngModel)]="editorialActual.nombre" name="nombre" required>
+      <small class="ayuda">Nombre de la editorial</small>
+    </div>
+    <div class="campo">
+      <label for="pais">País</label>
+      <input id="pais" type="text" [(ngModel)]="editorialActual.pais" name="pais">
+      <small class="ayuda">País de origen de la editorial</small>
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono</label>
+      <input id="telefono" type="text" [(ngModel)]="editorialActual.telefono" name="telefono">
+      <small class="ayuda">Número de contacto</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th><th>País</th><th>Teléfono</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of editorials">
+        <td>{{ item.nombre }}</td><td>{{ item.pais }}</td><td>{{ item.telefono }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,66 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Préstamos</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="fechaPrestamo">Fecha de préstamo</label>
+      <input id="fechaPrestamo" type="date" [(ngModel)]="prestamoActual.fechaPrestamo" name="fechaPrestamo" required>
+      <small class="ayuda">Cuándo se presta el libro</small>
+    </div>
+    <div class="campo">
+      <label for="fechaLimite">Fecha límite</label>
+      <input id="fechaLimite" type="date" [(ngModel)]="prestamoActual.fechaLimite" name="fechaLimite" required>
+      <small class="ayuda">Fecha máxima para devolverlo</small>
+    </div>
+    <div class="campo">
+      <label for="estado">Estado</label>
+      <input id="estado" type="text" [(ngModel)]="prestamoActual.estado" name="estado">
+      <small class="ayuda">Ej. ACTIVO, DEVUELTO</small>
+    </div>
+    <div class="campo">
+      <label for="socio">Socio</label>
+      <select id="socio" [(ngModel)]="prestamoActual.socio.id" name="socio">
+        <option [value]="0" disabled>Selecciona socio</option>
+        <option *ngFor="let opt of socios" [value]="opt.id">{{ opt.nombres }}</option>
+      </select>
+      <small class="ayuda">Quién se lleva el libro</small>
+    </div>
+    <div class="campo">
+      <label for="usuario">Registrado por</label>
+      <select id="usuario" [(ngModel)]="prestamoActual.usuario.id" name="usuario">
+        <option [value]="0" disabled>Selecciona registrado por</option>
+        <option *ngFor="let opt of usuarios" [value]="opt.id">{{ opt.username }}</option>
+      </select>
+      <small class="ayuda">Bibliotecario que registra el préstamo</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Fecha de préstamo</th><th>Fecha límite</th><th>Estado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of prestamos">
+        <td>{{ item.fechaPrestamo }}</td><td>{{ item.fechaLimite }}</td><td>{{ item.estado }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+          <button class="boton-secundario" (click)="marcarDevuelto(item)">Marcar devuelto</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

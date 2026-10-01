@@ -1,0 +1,74 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Libros</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="isbn">ISBN</label>
+      <input id="isbn" type="text" [(ngModel)]="libroActual.isbn" name="isbn" required>
+      <small class="ayuda">Código ISBN del libro</small>
+    </div>
+    <div class="campo">
+      <label for="titulo">Título</label>
+      <input id="titulo" type="text" [(ngModel)]="libroActual.titulo" name="titulo" required>
+      <small class="ayuda">Título del libro</small>
+    </div>
+    <div class="campo">
+      <label for="anioPublicacion">Año de publicación</label>
+      <input id="anioPublicacion" type="number" [(ngModel)]="libroActual.anioPublicacion" name="anioPublicacion">
+      <small class="ayuda">Ej. 2020</small>
+    </div>
+    <div class="campo">
+      <label for="numeroPaginas">N° de páginas</label>
+      <input id="numeroPaginas" type="number" [(ngModel)]="libroActual.numeroPaginas" name="numeroPaginas">
+      <small class="ayuda">Cantidad total de páginas</small>
+    </div>
+    <div class="campo campo-check">
+      <label><input type="checkbox" [(ngModel)]="libroActual.estado" name="estado"> Disponible en catálogo</label>
+      <small class="ayuda">Desmarca si el título ya no está disponible</small>
+    </div>
+    <div class="campo">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" [(ngModel)]="libroActual.categoria.id" name="categoria">
+        <option [value]="0" disabled>Selecciona categoría</option>
+        <option *ngFor="let opt of categorias" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">Género o categoría del libro</small>
+    </div>
+    <div class="campo">
+      <label for="editorial">Editorial</label>
+      <select id="editorial" [(ngModel)]="libroActual.editorial.id" name="editorial">
+        <option [value]="0" disabled>Selecciona editorial</option>
+        <option *ngFor="let opt of editoriales" [value]="opt.id">{{ opt.nombre }}</option>
+      </select>
+      <small class="ayuda">Quién publicó el libro</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>ISBN</th><th>Título</th><th>Año de publicación</th><th>N° de páginas</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of libros">
+        <td>{{ item.isbn }}</td><td>{{ item.titulo }}</td><td>{{ item.anioPublicacion }}</td><td>{{ item.numeroPaginas }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

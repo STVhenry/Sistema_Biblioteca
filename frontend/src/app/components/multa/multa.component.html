@@ -1,0 +1,69 @@
+<div class="contenedor">
+  <div class="encabezado-modulo">
+    <h2>Gestión de Multas</h2>
+    <button type="button" class="boton-pdf" (click)="descargarPdf()">📄 Descargar PDF</button>
+  </div>
+
+  <div *ngIf="mensajeError" class="alerta-error">{{ mensajeError }}</div>
+
+  <form class="formulario" (ngSubmit)="guardar()">
+    <div class="campo">
+      <label for="monto">Monto (S/)</label>
+      <input id="monto" type="number" [(ngModel)]="multaActual.monto" name="monto" required>
+      <small class="ayuda">Monto de la multa por atraso</small>
+    </div>
+    <div class="campo">
+      <label for="motivo">Motivo</label>
+      <input id="motivo" type="text" [(ngModel)]="multaActual.motivo" name="motivo">
+      <small class="ayuda">Ej. Devolución tardía, Libro dañado</small>
+    </div>
+    <div class="campo">
+      <label for="fechaMulta">Fecha de la multa</label>
+      <input id="fechaMulta" type="date" [(ngModel)]="multaActual.fechaMulta" name="fechaMulta">
+      <small class="ayuda">Cuándo se generó</small>
+    </div>
+    <div class="campo campo-check">
+      <label><input type="checkbox" [(ngModel)]="multaActual.pagada" name="pagada"> Pagada</label>
+      <small class="ayuda">Marca si el socio ya pagó la multa</small>
+    </div>
+    <div class="campo">
+      <label for="prestamo">Préstamo</label>
+      <select id="prestamo" [(ngModel)]="multaActual.prestamo.id" name="prestamo">
+        <option [value]="0" disabled>Selecciona préstamo</option>
+        <option *ngFor="let opt of prestamos" [value]="opt.id">#{{ opt.id }} - {{ opt.fechaPrestamo }}</option>
+      </select>
+      <small class="ayuda">Préstamo que generó la multa</small>
+    </div>
+    <div class="campo">
+      <label for="socio">Socio</label>
+      <select id="socio" [(ngModel)]="multaActual.socio.id" name="socio">
+        <option [value]="0" disabled>Selecciona socio</option>
+        <option *ngFor="let opt of socios" [value]="opt.id">{{ opt.nombres }}</option>
+      </select>
+      <small class="ayuda">Quién debe pagar la multa</small>
+    </div>
+
+    <div class="acciones-form">
+      <button type="submit">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+      <button type="button" class="boton-secundario" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+    </div>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Monto (S/)</th><th>Motivo</th><th>Fecha de la multa</th><th>Pagada</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of multas">
+        <td>{{ item.monto }}</td><td>{{ item.motivo }}</td><td>{{ item.fechaMulta }}</td><td>{{ item.pagada }}</td>
+        <td>
+          <button (click)="editar(item)">Editar</button>
+          <button class="boton-peligro" (click)="eliminar(item.id)">Eliminar</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

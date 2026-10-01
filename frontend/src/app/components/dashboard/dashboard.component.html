@@ -1,0 +1,33 @@
+<header class="cabecera">
+  <h1>Sistema de Gestión de Biblioteca</h1>
+  <div class="usuario-info" *ngIf="usuario">
+    <span>{{ usuario.nombreCompleto }} <small>({{ usuario.rolNombre }})</small></span>
+    <button (click)="cerrarSesion()">Cerrar sesión</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="menu-lateral">
+    <button
+      *ngFor="let item of menu"
+      [class.activo]="seccionActiva === item.id"
+      (click)="irA(item.id)">
+      {{ item.label }}
+    </button>
+  </nav>
+
+  <main class="contenido">
+    <app-libro *ngIf="seccionActiva === 'libros'"></app-libro>
+    <app-categoria *ngIf="seccionActiva === 'categorias'"></app-categoria>
+    <app-editorial *ngIf="seccionActiva === 'editoriales'"></app-editorial>
+    <app-autor *ngIf="seccionActiva === 'autores'"></app-autor>
+    <app-libro-autor *ngIf="seccionActiva === 'libro-autores'"></app-libro-autor>
+    <app-ejemplar *ngIf="seccionActiva === 'ejemplares'"></app-ejemplar>
+    <app-socio *ngIf="seccionActiva === 'socios'"></app-socio>
+    <app-prestamo *ngIf="seccionActiva === 'prestamos'"></app-prestamo>
+    <app-detalle-prestamo *ngIf="seccionActiva === 'detalle-prestamos'"></app-detalle-prestamo>
+    <app-multa *ngIf="seccionActiva === 'multas'"></app-multa>
+    <app-usuario *ngIf="seccionActiva === 'usuarios'"></app-usuario>
+    <app-rol *ngIf="seccionActiva === 'roles'"></app-rol>
+  </main>
+</div>
